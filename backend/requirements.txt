@@ -1,0 +1,5 @@
+fastapi
+uvicorn[standard]
+asyncmy
+sqlmodel
+python-dotenv

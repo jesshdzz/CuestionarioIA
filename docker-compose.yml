@@ -1,0 +1,65 @@
+services:
+  db:
+    image: mysql:9.1.0
+    hostname: db
+    container_name: 3parcial-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "${MYSQL_PORT}:3306"
+    volumes:
+      - ./database/data:/var/lib/mysql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - app-network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: 3parcial-phpmyadmin
+    environment:
+      PMA_HOST: db
+    ports:
+      - "${PHPMYADMIN_PORT}:80"
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  backend:
+    build: ./backend
+    container_name: 3parcial-fastapi
+    environment:
+      DB_HOST: db
+      DB_PORT: ${MYSQL_PORT}
+      DB_USER: ${MYSQL_USER}
+      DB_PASSWORD: ${MYSQL_PASSWORD}
+      DB_NAME: ${MYSQL_DATABASE}
+    ports:
+      - "${FASTAPI_PORT}:8000"
+    volumes:
+      - ./backend/app:/app
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  frontend:
+    build: ./frontend
+    container_name: 3parcial-nextjs
+    stdin_open: true
+    tty: true
+    depends_on:
+      - backend
+    ports:
+      - "${NEXTJS_PORT}:3000"
+    volumes:
+      - ./frontend/cuestionario-ia:/app
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
