@@ -49,17 +49,21 @@ services:
   frontend:
     build: ./frontend
     container_name: 3parcial-nextjs
-    stdin_open: true
-    tty: true
     depends_on:
       - backend
     ports:
       - "${NEXTJS_PORT}:3000"
     volumes:
       - ./frontend/cuestionario-ia:/app
+      - node_modules:/app/node_modules
+      - build:/app/.next
     networks:
       - app-network
 
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  node_modules:
+  build:

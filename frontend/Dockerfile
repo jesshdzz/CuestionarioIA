@@ -1,14 +1,13 @@
-FROM node:22-slim
+FROM node:22-alpine
 
 ENV NEXT_TELEMETRY_DISABLED=1
 WORKDIR /app
 
 # Copiar el package.json y package-lock.json
 COPY cuestionario-ia/package*.json ./
-RUN npm install
+RUN npm install --no-audit --prefer-offline
 
 # Copiar el resto de la aplicación
 COPY cuestionario-ia/ .
-EXPOSE 3000
 
 CMD ["npm", "run", "dev"]
