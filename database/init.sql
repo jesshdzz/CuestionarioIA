@@ -26,7 +26,7 @@ CREATE TABLE Cuestionario (
     id INT PRIMARY KEY AUTO_INCREMENT,
     profesor_id INT,
     fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (profesor_id) REFERENCES profesor(id)
+    FOREIGN KEY (profesor_id) REFERENCES Profesor(id)
 );
 
 CREATE TABLE Pregunta (
@@ -36,7 +36,7 @@ CREATE TABLE Pregunta (
     contenido TEXT,
     opciones JSON, -- Solo para opción múltiple
     respuesta_correcta TEXT,
-    FOREIGN KEY (cuestionario_id) REFERENCES cuestionario(id)
+    FOREIGN KEY (cuestionario_id) REFERENCES Cuestionario(id)
 );
 
 CREATE TABLE Respuesta (
@@ -45,6 +45,6 @@ CREATE TABLE Respuesta (
     alumno_id INT,
     respuesta TEXT,
     calificacion FLOAT,
-    FOREIGN KEY (pregunta_id) REFERENCES pregunta(id),
-    FOREIGN KEY (alumno_id) REFERENCES alumno(id)
+    FOREIGN KEY (pregunta_id) REFERENCES Pregunta(id),
+    FOREIGN KEY (alumno_id) REFERENCES Alumno(id)
 );
