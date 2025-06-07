@@ -11,13 +11,13 @@ services:
     ports:
       - "${MYSQL_PORT}:3306"
     volumes:
-      - ./database/data:/var/lib/mysql
-      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - mysql-data:/var/lib/mysql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:Z
     networks:
       - app-network
 
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin:latest
+    image: phpmyadmin:5
     container_name: 3parcial-phpmyadmin
     environment:
       PMA_HOST: db
@@ -40,7 +40,7 @@ services:
     ports:
       - "${FASTAPI_PORT}:8000"
     volumes:
-      - ./backend/app:/app
+      - ./backend/app:/app:Z
     depends_on:
       - db
     networks:
@@ -54,7 +54,7 @@ services:
     ports:
       - "${NEXTJS_PORT}:3000"
     volumes:
-      - ./frontend/cuestionario-ia:/app
+      - ./frontend/cuestionario-ia:/app:Z
       - node_modules:/app/node_modules
       - build:/app/.next
     networks:
@@ -67,3 +67,4 @@ networks:
 volumes:
   node_modules:
   build:
+  mysql-data:
