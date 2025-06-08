@@ -3,3 +3,5 @@ uvicorn[standard]
 asyncmy
 sqlmodel
 python-dotenv
+pydantic-settings
+cryptography
